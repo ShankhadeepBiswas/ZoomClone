@@ -1,3 +1,4 @@
+socket = io();
 const myVideo = document.createElement('video')
 const vGrid = document.getElementById('video-grid')
 navigator.mediaDevices.getUserMedia({
@@ -7,4 +8,12 @@ navigator.mediaDevices.getUserMedia({
     myVideo.srcObject = stream //Adding stream to the element srcObject
     myVideo.play() // loads and starts media resource
 })
-vGrid.append(myVideo) // Appending element "video" to div tag of id="video-grid"
+vGrid.append(myVideo) 
+
+socket.emit('join-room',ROOM_ID);
+socket.on('user-connected',()=>{
+    connectToNewUser();
+})
+const connectToNewUser=()=>{
+    console.log('New user!');
+}

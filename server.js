@@ -5,6 +5,10 @@ const express = require('express')
 const app =express()
 const server = http.createServer(app)
 const io = socketio(server)
+const {ExpressPeerServer} = require('peer')
+const peerserver= ExpressPeerServer(server,{
+    debug: true
+})
 const port = process.env.PORT || 5000
 const { v4 } = require('uuid')
 
@@ -12,7 +16,11 @@ app.set('view engine','ejs')
 app.use(express.static('./public'))
 
 io.on('connection',(socket)=>{
-    socket.on('')
+    console.log("Web Socket On");
+    socket.on('join-room',(roomID)=>{
+        socket.join(roomID)
+        socket.to(roomID).broadcast.emit('user-connected');
+    })
 })
 
 app.get('/',(req,res)=>{
@@ -21,6 +29,6 @@ app.get('/',(req,res)=>{
 app.get('/:id',(req,res)=>{
     res.render('room',{ id : req.params.id})
 })
-app.listen(port,()=>{
+server.listen(port,()=>{
     console.log('App listening to PORT',port);
 })
