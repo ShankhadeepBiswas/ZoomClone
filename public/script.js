@@ -1,19 +1,32 @@
 socket = io();
 const myVideo = document.createElement('video')
 const vGrid = document.getElementById('video-grid')
+const peer = new Peer(undefined,{
+    path:'/peerjs',
+    host:'/',
+    port:'5000'
+})
+
+peer.on('open',id=>{
+    socket.emit('join-room',ROOM_ID,id);
+})
 navigator.mediaDevices.getUserMedia({
     audio: true,
     video: true
 }).then((stream)=>{
-    myVideo.srcObject = stream //Adding stream to the element srcObject
-    myVideo.play() // loads and starts media resource
+    addVideoStream(myVideo,stream)
 })
 vGrid.append(myVideo) 
+const addVideoStream =(video,stream)=>{
+    video.srcObject= stream;
+    video.addEventListener('loadedmetadata',()=>{
+      video.play()  
+    })
+}
 
-socket.emit('join-room',ROOM_ID);
-socket.on('user-connected',()=>{
-    connectToNewUser();
+socket.on('user-connected',(userId,stream)=>{
+    connectToNewUser(userId,stream);
 })
-const connectToNewUser=()=>{
+const connectToNewUser=(userId,stream)=>{
     console.log('New user!');
 }

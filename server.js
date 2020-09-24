@@ -11,15 +11,14 @@ const peerserver= ExpressPeerServer(server,{
 })
 const port = process.env.PORT || 5000
 const { v4 } = require('uuid')
-
 app.set('view engine','ejs')
 app.use(express.static('./public'))
-
+app.use('/peerjs',peerserver);
 io.on('connection',(socket)=>{
     console.log("Web Socket On");
-    socket.on('join-room',(roomID)=>{
+    socket.on('join-room',(roomID,userId)=>{
         socket.join(roomID)
-        socket.to(roomID).broadcast.emit('user-connected');
+        socket.to(roomID).broadcast.emit('user-connected',userId);
     })
 })
 
