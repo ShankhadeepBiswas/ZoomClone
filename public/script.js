@@ -5,7 +5,7 @@ const vGrid = document.getElementById('video-grid')
 var peer = new Peer(undefined,{
     path:'/peerjs',
     host:'/',
-    port:'5000'
+    port:`${process.env.PORT}`
 })
 navigator.mediaDevices.getUserMedia({
     audio: true,
