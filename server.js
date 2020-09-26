@@ -1,9 +1,7 @@
-require('dotenv').config()
 const socketio = require('socket.io')
-const http = require('http')
 const express = require('express')
 const app =express()
-const server = http.createServer(app)
+const server = require('http').Server(app)
 const io = socketio(server)
 const {ExpressPeerServer} = require('peer')
 const peerserver= ExpressPeerServer(server,{
@@ -21,6 +19,9 @@ io.on('connection',(socket)=>{
         socket.to(roomID).broadcast.emit('user-connected',userId);
         socket.on('message', msg =>{
             io.to(roomID).emit('createMessage', msg)
+        })
+        socket.on('disconnect',()=>{
+            socket.to(roomID).broadcast.emit('user-disconnected',userId);
         })
     })
 })

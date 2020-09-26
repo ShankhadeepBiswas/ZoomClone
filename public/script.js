@@ -1,12 +1,14 @@
 const socket = io('/');
 const myVideo = document.createElement('video')
+myVideo.muted= true
 let myVideoStream
 const vGrid = document.getElementById('video-grid')
 var peer = new Peer(undefined,{
     path:'/peerjs',
     host:'/',
-    port:`${process.env.PORT}`
+    port:`433`
 })
+const peers={}
 navigator.mediaDevices.getUserMedia({
     audio: true,
     video: true
@@ -29,10 +31,9 @@ peer.on('open',id=>{
 })
 const addVideoStream =(video,stream)=>{
     video.srcObject= stream;
-    // video.addEventListener('loadedmetadata',()=>{
-    //   video.play()  
-    // })
-    video.play()
+    video.addEventListener('loadedmetadata',()=>{
+      video.play()  
+    })
     vGrid.append(video)
 }
 
@@ -42,6 +43,10 @@ const connectToNewUser=(userId,stream)=>{
     call.on('stream', UserVideoStream=>{
         addVideoStream(video,UserVideoStream)
     })
+    call.on('close',()=>{
+        video.remove();
+    })
+    peers[userId] = call
 }
 
 let text = $('input')
@@ -112,3 +117,6 @@ const setStopVideo=()=>{
     `
     document.querySelector(".main__video_button").innerHTML=html
 }
+socket.on('user-disconnected', userId =>{
+    peers[userId].close()
+})
