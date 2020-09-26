@@ -5,7 +5,7 @@ const vGrid = document.getElementById('video-grid')
 var peer = new Peer(undefined,{
     path:'/peerjs',
     host:'/',
-    port:'443'
+    port:'5000'
 })
 navigator.mediaDevices.getUserMedia({
     audio: true,
@@ -29,9 +29,10 @@ peer.on('open',id=>{
 })
 const addVideoStream =(video,stream)=>{
     video.srcObject= stream;
-    video.addEventListener('loadedmetadata',()=>{
-      video.play()  
-    })
+    // video.addEventListener('loadedmetadata',()=>{
+    //   video.play()  
+    // })
+    video.play()
     vGrid.append(video)
 }
 
@@ -52,7 +53,7 @@ $('html').keydown(e=>{
     }
 })
 socket.on('createMessage', msg =>{
-    $('.messages').append(`<li class="message"><b>user</b><br/>${msg}</li>`)
+    $('.messages').append(`<li class="message"><b>User</b><br/>${msg}</li>`)
     scrollToBottom()
 })
 const scrollToBottom = ()=>{
