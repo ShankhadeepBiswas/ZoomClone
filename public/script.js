@@ -3,7 +3,11 @@ const myVideo = document.createElement('video')
 myVideo.muted= true
 let myVideoStream
 const vGrid = document.getElementById('video-grid')
-var peer = new Peer()
+var peer = new Peer({
+    secure: true,
+    host: 'shankhadeep-zoom-clone.herokuapp.com',
+    port: 443
+})
 const peers={}
 navigator.mediaDevices.getUserMedia({
     audio: true,
