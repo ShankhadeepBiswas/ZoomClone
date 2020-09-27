@@ -4,6 +4,7 @@ myVideo.muted= true
 let myVideoStream
 const vGrid = document.getElementById('video-grid')
 var peer = new Peer({
+    key:'peerjs',
     secure: true,
     host: 'shankhadeep-zoom-clone.herokuapp.com',
     port: 443
