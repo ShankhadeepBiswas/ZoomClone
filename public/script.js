@@ -3,11 +3,7 @@ const myVideo = document.createElement('video')
 myVideo.muted= true
 let myVideoStream
 const vGrid = document.getElementById('video-grid')
-var peer = new Peer(undefined,{
-    path:'/peerjs',
-    host:'/',
-    port:`433`
-})
+var peer = new Peer()
 const peers={}
 navigator.mediaDevices.getUserMedia({
     audio: true,
@@ -52,7 +48,6 @@ const connectToNewUser=(userId,stream)=>{
 let text = $('input')
 $('html').keydown(e=>{
     if(e.which == 13 && text.val().length !== 0){
-        console.log(text.val());
         socket.emit('message',text.val())
         text.val('')
     }
