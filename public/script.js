@@ -1,15 +1,13 @@
-const socket = io();
+const socket = io('/');
 const myVideo = document.createElement('video')
 myVideo.muted= true
 let myVideoStream
 const vGrid = document.getElementById('video-grid')
 const peerconfig ={
-key: 'peerjs',
-secure: true,
-host: 'shankhadeep-zoom-clone.herokuapp.',
+host: 'shankhadeep-zoom-clone.herokuapp.com',
 port: 443
 }
-var peer = new Peer(undefined,peerconfig)
+const peer = new Peer(undefined,peerconfig)
 const peers={}
 navigator.mediaDevices.getUserMedia({
     audio: true,
@@ -119,5 +117,5 @@ const setStopVideo=()=>{
     document.querySelector(".main__video_button").innerHTML=html
 }
 socket.on('user-disconnected', userId =>{
-    peers[userId].close()
+    if (peers[userId]) peers[userId].close()
 })
