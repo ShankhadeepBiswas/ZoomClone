@@ -1,14 +1,14 @@
-const socket = io('/');
+const socket = io();
 const myVideo = document.createElement('video')
 myVideo.muted= true
 let myVideoStream
 const vGrid = document.getElementById('video-grid')
-var peer = new Peer({
-    key:'peerjs',
-    secure: true,
-    host: 'shankhadeep-zoom-clone.herokuapp.com',
-    port: 443
-})
+const peerconfig ={
+secure: true,
+host: 'shankhadeep-zoom-clone.herokuapp.',
+port: 443
+}
+var peer = new Peer(123456789,peerconfig)
 const peers={}
 navigator.mediaDevices.getUserMedia({
     audio: true,
